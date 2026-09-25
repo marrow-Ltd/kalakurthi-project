@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-plum-dark font-body;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+  ::selection {
+    background-color: #E8B4B8;
+    color: #4E1327;
+  }
+}
+
+@layer components {
+  /* Elegant script-style tagline accent */
+  .tagline-script {
+    font-family: 'Cormorant', serif;
+    font-style: italic;
+    letter-spacing: 0.03em;
+  }
+
+  /* Card used across Services / Gallery with gentle float on hover */
+  .craft-card {
+    @apply bg-white/70 backdrop-blur-sm rounded-2xl shadow-card border border-plum/5 transition-all duration-500;
+  }
+  .craft-card:hover {
+    @apply shadow-soft -translate-y-2;
+    animation: floaty 3s ease-in-out infinite;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-plum text-cream px-6 py-3 rounded-full
+           font-medium tracking-wide transition-all duration-300 hover:bg-plum-light hover:shadow-soft
+           active:scale-95;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-transparent border-2 border-plum text-plum
+           px-6 py-3 rounded-full font-medium tracking-wide transition-all duration-300
+           hover:bg-plum hover:text-cream active:scale-95;
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 bg-gold text-plum-dark px-6 py-3 rounded-full
+           font-semibold tracking-wide transition-all duration-300 hover:brightness-110 hover:shadow-soft
+           active:scale-95;
+  }
+
+  /* WhatsApp inquiry CTA */
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-2 bg-whatsapp text-white px-4 py-2.5 rounded-full
+           text-sm font-semibold tracking-wide transition-all duration-300 hover:bg-whatsapp-dark
+           hover:shadow-soft active:scale-95;
+  }
+
+  /* Hand-stitched dashed border accent (inset dashed "thread" inside the card edge) */
+  .stitched {
+    position: relative;
+  }
+  .stitched::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1.5px dashed rgba(200, 109, 81, 0.55);
+    border-radius: 0.85rem;
+    pointer-events: none;
+  }
+
+  /* Dashed thread divider */
+  .stitch-divider {
+    border-top: 2px dashed rgba(200, 109, 81, 0.45);
+  }
+
+  .section-eyebrow {
+    @apply uppercase tracking-[0.25em] text-xs font-semibold text-terracotta mb-3;
+  }
+
+  .fade-section {
+    @apply opacity-0 animate-fadeInUp;
+  }
+}
+
+/* --- Signature stitching-line effect: an animated dashed thread that "sews" itself in --- */
+.stitch-line {
+  stroke-dasharray: 8 6;
+  stroke-dashoffset: 1000;
+  animation: stitch-draw 2.8s ease-out forwards;
+}
+@keyframes stitch-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Needle-and-thread loading dots for admin actions */
+.thread-dot {
+  animation: threadPulse 1.4s ease-in-out infinite;
+}
+.thread-dot:nth-child(2) { animation-delay: 0.2s; }
+.thread-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* Subtle woven texture overlay for hero/section backgrounds */
+.woven-texture {
+  background-image: radial-gradient(circle at 1px 1px, rgba(106,27,56,0.06) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+/* Shimmer skeleton for loading states in admin/user panels */
+.skeleton {
+  background: linear-gradient(90deg, #F7F2EA 25%, #EFE6D8 37%, #F7F2EA 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* Custom scrollbar to match brand */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #F7F2EA;
+}
+::-webkit-scrollbar-thumb {
+  background: #C86D51;
+  border-radius: 999px;
+}
+
+/* Mobile polish: no horizontal scroll, keep content clear of notches */
+html, body { overflow-x: hidden; }
+body { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* ===================== Motion & mobile-app styling ===================== */
+
+/* Slide-out mobile drawer */
+.drawer-panel { transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); }
+.drawer-backdrop { transition: opacity 0.3s ease; }
+.drawer-link { animation: slideRight 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 55ms + 120ms); }
+
+/* Scroll reveal (see components/Reveal.jsx) */
+.reveal { opacity: 0; transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.reveal-up { transform: translateY(28px); }
+.reveal-left { transform: translateX(-32px); }
+.reveal-right { transform: translateX(32px); }
+.reveal-zoom { transform: scale(0.94); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Hero slider */
+.hero-slide { opacity: 0; visibility: hidden; transition: opacity 0.9s ease, visibility 0s linear 0.9s; }
+.hero-slide.is-active { opacity: 1; visibility: visible; transition: opacity 0.9s ease; }
+.hero-slide .slide-anim { opacity: 0; }
+.hero-slide.is-active .slide-anim { animation: slideUp 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0ms); }
+.hero-slide .slide-img { transform: scale(1.12); }
+.hero-slide.is-active .slide-img { animation: kenBurns 7s ease-out forwards; }
+.hero-slide .slide-float { animation: floaty 5s ease-in-out infinite; }
+.slide-static .slide-anim { opacity: 1; animation: none; }
+.slide-static .slide-img { transform: none; animation: none; }
+.progress-fill { transform-origin: left; animation: progress var(--dur, 5000ms) linear forwards; }
+.progress-fill.paused { animation-play-state: paused; }
+
+/* Category circles */
+.cat-item { animation: popIn 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+.cat-circle { transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.35s ease; }
+.cat-item:hover .cat-circle, .cat-item:active .cat-circle { transform: translateY(-4px) scale(1.05); box-shadow: 0 12px 28px -8px rgba(106, 27, 56, 0.35); }
+
+/* Product cards */
+.product-card { transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.4s ease; }
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px -14px rgba(106, 27, 56, 0.28); }
+.product-card .p-img { transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.5s ease; }
+.product-card:hover .p-img-main { transform: scale(1.07); }
+.heart-btn.is-liked svg { animation: heartPop 0.45s ease-out; }
+
+/* Filter accordion (+ / -) */
+.accordion { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s ease; }
+.accordion.open { grid-template-rows: 1fr; }
+.accordion > div { overflow: hidden; }
+
+/* Bottom tab bar */
+.tab-item .tab-icon { transition: transform 0.3s ease; }
+.tab-item.is-active .tab-icon { animation: tabPop 0.45s ease-out; }
+.tab-item .tab-bar { transform: scaleX(0); transition: transform 0.3s ease; }
+.tab-item.is-active .tab-bar { transform: scaleX(1); }
+
+/* Button sheen */
+.btn-shine { position: relative; overflow: hidden; }
+.btn-shine::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: translateX(-120%) skewX(-20deg);
+}
+.btn-shine:hover::after { animation: shine 0.9s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hero-slide .slide-anim { opacity: 1; animation: none !important; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* Keyframes referenced from plain CSS above (Tailwind only emits keyframes for animate-* classes it sees) */
+@keyframes slideUp { 0% { opacity: 0; transform: translateY(26px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes slideRight { 0% { opacity: 0; transform: translateX(28px); } 100% { opacity: 1; transform: translateX(0); } }
+@keyframes kenBurns { 0% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes heartPop { 0% { transform: scale(1); } 40% { transform: scale(1.4); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
+@keyframes tabPop { 0% { transform: translateY(4px) scale(0.85); } 60% { transform: translateY(-3px) scale(1.12); } 100% { transform: translateY(0) scale(1); } }
+@keyframes popIn { 0% { opacity: 0; transform: scale(0.6); } 70% { opacity: 1; transform: scale(1.06); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes progress { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
+@keyframes shine { 0% { transform: translateX(-120%) skewX(-20deg); } 100% { transform: translateX(320%) skewX(-20deg); } }
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes threadPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
